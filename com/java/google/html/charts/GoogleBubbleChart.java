@@ -2,7 +2,7 @@ package com.java.google.html.charts;
 
 import java.util.Map;
 
-public class GoogleScatterChart
+public class GoogleBubbleChart
 {
   private String chartScriptText; // instrucciones javascript para crear las graficas
   private String drawChartText; // instrucciones javascript para dibbujar las graficas
@@ -10,7 +10,7 @@ public class GoogleScatterChart
   private String optionChart; // texto de opciones para la grafica
   private String func_name; // nombre de la funcion en javascript
   private String id_element; // identificador para html
-  public GoogleScatterChart(String func_name, String id_element)
+  public GoogleBubbleChart(String func_name, String id_element)
   {
     this.chartScriptText    = "";
     this.drawChartText      = "";
@@ -20,13 +20,13 @@ public class GoogleScatterChart
     this.id_element         = id_element;
   }
 
-  public void setOptionScatterChart(String option)
+  public void setOptionBubbleChart(String option)
   {
     this.optionChart = "     // Set chart options\n" +
                        "     var options = {" + option + "};\n";
   }
 
-  public void generateCodeScatterChart(double[][] table,String[] table_label)
+  public void generateCodeBubbleChart(String table)
   {
     this.drawChartText      = this.drawChartText +
                               "    // Draw the pie chart for " + this.func_name + " when Charts is loaded.\n" +
@@ -36,33 +36,34 @@ public class GoogleScatterChart
                               "    function " + this.func_name + "(){\n"  +
                               "     // Create the data table for " + this.func_name +  ".\n" +
                               "     var data = new google.visualization.arrayToDataTable([\n";
-    this.functionsChartText = this.functionsChartText + "       [";
-    for (int col_label = 0; col_label<table_label.length; col_label++) {
-      if (col_label == (table_label.length - 1)){
-        this.functionsChartText = this.functionsChartText + "\"" + table_label[col_label] + "\"";
-      }
-      else{
-        this.functionsChartText = this.functionsChartText + "\"" + table_label[col_label] + "\"" + ",";
-      }
-    }
-    this.functionsChartText = this.functionsChartText + "],\n";
-    for (int row = 0; row<table.length; row++) {
-      this.functionsChartText = this.functionsChartText + "       [";
-      for (int col = 0; col<table[row].length; col++) {
-        if (col == (table[row].length - 1)){
-          this.functionsChartText = this.functionsChartText + String.valueOf(table[row][col]);
-        }
-        else{
-          this.functionsChartText = this.functionsChartText + String.valueOf(table[row][col]) + ",";
-        }
-      }
-      if (row == (table.length - 1)) {
-        this.functionsChartText = this.functionsChartText + "]\n";
-      }
-      else{
-        this.functionsChartText = this.functionsChartText + "],\n";
-      }
-    }
+    // this.functionsChartText = this.functionsChartText + "       [";
+    // for (int col_label = 0; col_label<table_label.length; col_label++) {
+    //   if (col_label == (table_label.length - 1)){
+    //     this.functionsChartText = this.functionsChartText + "\"" + table_label[col_label] + "\"";
+    //   }
+    //   else{
+    //     this.functionsChartText = this.functionsChartText + "\"" + table_label[col_label] + "\"" + ",";
+    //   }
+    // }
+    // this.functionsChartText = this.functionsChartText + "],\n";
+    // for (int row = 0; row<table.length; row++) {
+    //   this.functionsChartText = this.functionsChartText + "       [";
+    //   for (int col = 0; col<table[row].length; col++) {
+    //     if (col == (table[row].length - 1)){
+    //       this.functionsChartText = this.functionsChartText + String.valueOf(table[row][col]);
+    //     }
+    //     else{
+    //       this.functionsChartText = this.functionsChartText + String.valueOf(table[row][col]) + ",";
+    //     }
+    //   }
+    //   if (row == (table.length - 1)) {
+    //     this.functionsChartText = this.functionsChartText + "]\n";
+    //   }
+    //   else{
+    //     this.functionsChartText = this.functionsChartText + "],\n";
+    //   }
+    // }
+    this.functionsChartText = this.functionsChartText + table + "\n";
     this.functionsChartText = this.functionsChartText + "]);\n";
 
     if (!this.optionChart.equals("")) {this.functionsChartText = this.functionsChartText + this.optionChart;}
@@ -73,11 +74,11 @@ public class GoogleScatterChart
 
     this.functionsChartText = this.functionsChartText +
       "     // Instantiate and draw the chart for " + this.func_name +  ".\n" +
-      "     var chart = new google.visualization.ScatterChart(document.getElementById('" + this.id_element + "'));\n" +
+      "     var chart = new google.visualization.BubbleChart(document.getElementById('" + this.id_element + "'));\n" +
       "     chart.draw(data,options);\n" +
       "    }\n";
   }
-  
+
 
   public String getDrawChartText()
   {

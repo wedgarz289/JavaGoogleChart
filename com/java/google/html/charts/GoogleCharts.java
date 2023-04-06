@@ -151,6 +151,17 @@ public class GoogleCharts
     this.count_charts++;
     this.optionChart = "";
   }
+
+  public void BubbleChart(String table)
+  {
+    GoogleBubbleChart bubbleChart = new GoogleBubbleChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
+    bubbleChart.setOptionBubbleChart(this.optionChart);
+    bubbleChart.generateCodeBubbleChart(table);
+    this.drawChartText      = this.drawChartText      + bubbleChart.getDrawChartText();
+    this.functionsChartText = this.functionsChartText + bubbleChart.getFunctionChartText();
+    this.count_charts++;
+    this.optionChart = "";
+  }
   public void create()
   {
     this.html_text = "" +
