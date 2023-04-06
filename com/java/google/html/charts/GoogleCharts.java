@@ -162,6 +162,29 @@ public class GoogleCharts
     this.count_charts++;
     this.optionChart = "";
   }
+
+  public void AreaChart(double[][] table,String[] table_label)
+  {
+    GoogleAreaChart areaChart = new GoogleAreaChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
+    areaChart.setOptionAreaChart(this.optionChart);
+    areaChart.generateCodeAreaChart(table,table_label);
+    this.drawChartText      = this.drawChartText      + areaChart.getDrawChartText();
+    this.functionsChartText = this.functionsChartText + areaChart.getFunctionChartText();
+    this.count_charts++;
+    this.optionChart = "";
+  }
+
+  public void AreaChart(String[] column_1,double[][] table,String[] table_label)
+  {
+    GoogleAreaChart areaChart = new GoogleAreaChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
+    areaChart.setOptionAreaChart(this.optionChart);
+    areaChart.generateCodeAreaChart(column_1,table,table_label);
+    this.drawChartText      = this.drawChartText      + areaChart.getDrawChartText();
+    this.functionsChartText = this.functionsChartText + areaChart.getFunctionChartText();
+    this.count_charts++;
+    this.optionChart = "";
+  }
+
   public void create()
   {
     this.html_text = "" +

@@ -59,7 +59,7 @@ public class Main{
     };
     String[] data_barChart_label    ={"Winter", "Spring", "Summer", "Fall"};
 
-    charts.sizeMatrixSubplots(3,3);
+    charts.sizeMatrixSubplots(2,3);
     charts.subplots(1,1);
     optionChart = "'title':'How Much Pizza I Ate Last Night',\n" +
                   "                    'width' :" + width  + ",\n" +
@@ -170,6 +170,23 @@ public class Main{
     charts.subplots(2,2);
     charts.setOptionChart(optionChart);
     charts.BubbleChart(data_bubbleChart);
+
+    String[] areaChart_column_1 = {"2013","2014","2015","2016"};
+    double[][] data_areaChart = {
+       {1000,      400 },
+       {1170,      460 },
+       {660,       1120},
+       {1030,      540 }
+    };
+    String[] areaChart_table_label = {"'Year'", "'Sales'", "'Expenses'"};
+    optionChart = "title: 'Company Performance',\n" +
+                  "                    'width' :" + width  + ",\n" +
+                  "                    'height':" + height + ",\n" +
+                  "                     hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},\n" +
+                  "                     vAxis: {minValue: 0}\n";
+    charts.subplots(2,3);
+    charts.setOptionChart(optionChart);
+    charts.AreaChart(areaChart_column_1,data_areaChart,areaChart_table_label);
 
     charts.create();
   }

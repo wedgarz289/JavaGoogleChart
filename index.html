@@ -15,6 +15,8 @@
     google.charts.setOnLoadCallback(drawChart_4);
     // Draw the pie chart for drawChart_5 when Charts is loaded.
     google.charts.setOnLoadCallback(drawChart_5);
+    // Draw the pie chart for drawChart_6 when Charts is loaded.
+    google.charts.setOnLoadCallback(drawChart_6);
     // Callback that draws the pie chart for drawChart_1.
     function drawChart_1(){
      // Create the data table for drawChart_1.
@@ -158,6 +160,27 @@
      var chart = new google.visualization.BubbleChart(document.getElementById('drawChart_div_5'));
      chart.draw(data,options);
     }
+    // Callback that draws the pie chart for drawChart_6.
+    function drawChart_6(){
+     // Create the data table for drawChart_6.
+     var data = new google.visualization.arrayToDataTable([
+       ["'Year'","'Sales'","'Expenses'"],
+       ["2013",1000.0,400.0],
+       ["2014",1170.0,460.0],
+       ["2015",660.0,1120.0],
+       ["2016",1030.0,540.0]
+]);
+     // Set chart options
+     var options = {title: 'Company Performance',
+                    'width' :500,
+                    'height':400,
+                     hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+                     vAxis: {minValue: 0}
+};
+     // Instantiate and draw the chart for drawChart_6.
+     var chart = new google.visualization.AreaChart(document.getElementById('drawChart_div_6'));
+     chart.draw(data,options);
+    }
    </script>
   </head>
   <body>
@@ -171,12 +194,7 @@
      <tr>
        <td><div id="drawChart_div_4" style="border: 1px solid #ccc"></div></td>
        <td><div id="drawChart_div_5" style="border: 1px solid #ccc"></div></td>
-       <td><div style="border: 1px solid #ccc"></div></td>
-     </tr>
-     <tr>
-       <td><div style="border: 1px solid #ccc"></div></td>
-       <td><div style="border: 1px solid #ccc"></div></td>
-       <td><div style="border: 1px solid #ccc"></div></td>
+       <td><div id="drawChart_div_6" style="border: 1px solid #ccc"></div></td>
      </tr>
     </table>
   </body>
