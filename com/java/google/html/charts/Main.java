@@ -207,14 +207,7 @@ public class Main{
     list.add(col_1);
     list.add(col_2);
     list.add(col_3);
-    
-    int size = list.get(0).getData().length;
-    for (int row = 0; row<size; row++) {
-      for (int col = 0; col<list.size(); col++) {
-        System.out.print(list.get(col).getData()[row] + " ");
-      }
-      System.out.println("");
-    }
 
+    charts.printData(list);
   }
 }

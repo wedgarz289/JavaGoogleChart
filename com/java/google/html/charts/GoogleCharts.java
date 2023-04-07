@@ -3,6 +3,7 @@ package com.java.google.html.charts;
 import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GoogleCharts
 {
@@ -29,6 +30,17 @@ public class GoogleCharts
     this.cols               = 0;
   }
 
+  public void printData(ArrayList<DataArray> data)
+  {
+    int size_row = data.get(0).getData().length;
+    int size_col = data.size();
+    for (int row = 0; row<size_row; row++) {
+      for (int col = 0; col<size_col; col++) {
+        System.out.print(data.get(col).getData()[row] + " ");
+      }
+      System.out.println("");
+    }
+  }
   private void writeHTML()
   {
     try {
