@@ -2,6 +2,7 @@ package com.java.google.html.charts;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Main{
   public static void main(String[] args) {
@@ -189,5 +190,31 @@ public class Main{
     charts.AreaChart(areaChart_column_1,data_areaChart,areaChart_table_label);
 
     charts.create();
+
+
+
+    // test
+    DataArray<String> col_1 = new DataArray<String>();
+    col_1.setData(new String[]{"2005","2006","2007"});
+    // col_1.setDataString(new String[]{"2005","2006","2007"});
+    DataArray<Double> col_2 = new DataArray<Double>();
+    col_2.setData(new Double[]{1.2,1.3,1.4});
+
+    DataArray<Integer> col_3 = new DataArray<Integer>();
+    col_3.setData(new Integer[]{1,2,3});
+
+    ArrayList<DataArray> list = new ArrayList<DataArray>();
+    list.add(col_1);
+    list.add(col_2);
+    list.add(col_3);
+    
+    int size = list.get(0).getData().length;
+    for (int row = 0; row<size; row++) {
+      for (int col = 0; col<list.size(); col++) {
+        System.out.print(list.get(col).getData()[row] + " ");
+      }
+      System.out.println("");
+    }
+
   }
 }

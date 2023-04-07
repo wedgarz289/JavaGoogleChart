@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Created-By: Thu Apr  6 16:06:41     2023 (EDGAR)
+Created-By: Thu Apr  6 21:25:47     2023 (EDGAR)
 Main-Class: com.java.google.html.charts.Main
 
