@@ -20,20 +20,18 @@
     // Callback that draws the pie chart for drawChart_1.
     function drawChart_1(){
      // Create the data table for drawChart_1.
-     var data = new google.visualization.DataTable();
-     data.addColumn('string', 'Topping');
-     data.addColumn('number', 'Slices');
-     data.addRows([
+     var data = new google.visualization.arrayToDataTable([
+       ['Flavor','Count'],
        ['Zucchini',2],
        ['Onions',1],
-       ['Mushrooms',1],
        ['Olives',2],
-       ['Pepperoni',1]
+       ['Pepperoni',1],
+       ['Mushrooms',1]
      ]);
      // Set chart options
      var options = {'title':'How Much Pizza I Ate Last Night',
-                    'width' :500,
-                    'height':400};
+                    width :500,
+                    height:400};
      // Instantiate and draw the chart for drawChart_1.
      var chart = new google.visualization.PieChart(document.getElementById('drawChart_div_1'));
      chart.draw(data,options);
@@ -42,18 +40,18 @@
     function drawChart_2(){
      // Create the data table for drawChart_2.
      var data = new google.visualization.arrayToDataTable([
-       ["Winter","Spring","Summer","Fall"],
+       ['Winter','Spring','Summer','Fall'],
        [3237.3,4792.2,4074.3,4444.1],
        [6346.3,4685.6,3903.0,3787.7],
        [4599.6,5285.1,5349.9,7521.9],
        [4192.6,5929.4,4470.2,6673.7],
        [4880.5,5560.8,4031.9,7015.5]
-]);
+     ]);
      // Set chart options
      var options = {title: 'Seasons',
                     legend : { position: 'none' },
-                    'width' :500,
-                    'height':400,                    chartArea: { width: 300 }};
+                    width :500,
+                    height:400,                    chartArea: { width: 300 }};
      // Instantiate and draw the chart for drawChart_2.
      var chart = new google.visualization.ColumnChart(document.getElementById('drawChart_div_2'));
      chart.draw(data,options);
@@ -62,18 +60,18 @@
     function drawChart_3(){
      // Create the data table for drawChart_3.
      var data = new google.visualization.arrayToDataTable([
-       ["Year","Sales","Expenses"],
-       ["2004",1000.0,400.0],
-       ["2005",1170.0,460.0],
-       ["2006",660.0,1120.0],
-       ["2007",1030.0,540.0]
-]);
+       ['Year','Sales','Expenses'],
+       ['2004',1000,400],
+       ['2005',1170,460],
+       ['2006',660,1120],
+       ['2007',1030,540]
+     ]);
      // Set chart options
      var options = {title: 'Company Performance',
                     curveType: 'function',
                     legend: { position: 'bottom' },
-                    'width' :500,
-                    'height':400,
+                    width :500,
+                    height:400,
                     crosshair: {color: '#000',trigger: 'selection'}};
      // Instantiate and draw the chart for drawChart_3.
      var chart = new google.visualization.LineChart(document.getElementById('drawChart_div_3'));
@@ -83,7 +81,7 @@
     function drawChart_4(){
      // Create the data table for drawChart_4.
      var data = new google.visualization.arrayToDataTable([
-       ["Student ID","Hours Studied","Final"],
+       ['Student ID','Hours Studied','Final'],
        [0.0,0.0,67.0],
        [1.0,1.0,88.0],
        [2.0,2.0,77.0],
@@ -114,11 +112,11 @@
        [27.0,2.0,81.0],
        [28.0,8.0,79.0],
        [29.0,9.0,83.0]
-]);
+     ]);
      // Set chart options
      var options = {'title':'Students\' Final Grades - based on hours studied',
-                    'width' :500,
-                    'height':400,
+                    width :500,
+                    height:400,
                     series: {0: {targetAxisIndex: 0},1: {targetAxisIndex: 1}},
                     vAxes: {
                             // Adds titles to each axis.
@@ -134,24 +132,23 @@
     function drawChart_5(){
      // Create the data table for drawChart_5.
      var data = new google.visualization.arrayToDataTable([
-    ['ID', 'Life Expectancy', 'Fertility Rate', 'Region',     'Population'],
-    ['CAN',    80.66,              1.67,      'North America',  33739900],
-    ['DEU',    79.84,              1.36,      'Europe',         81902307],
-    ['DNK',    78.6,               1.84,      'Europe',         5523095],
-    ['EGY',    72.73,              2.78,      'Middle East',    79716203],
-    ['GBR',    80.05,              2,         'Europe',         61801570],
-    ['IRN',    72.49,              1.7,       'Middle East',    73137148],
-    ['IRQ',    68.09,              4.77,      'Middle East',    31090763],
-    ['ISR',    81.55,              2.96,      'Middle East',    7485600],
-    ['RUS',    68.6,               1.54,      'Europe',         141850000],
-    ['USA',    78.09,              2.05,      'North America',  307007000]
-
-]);
+       ['ID','Life Expectancy','Fertility Rate','Region','Population'],
+       ['CAN',80.66,1.67,'North America',33739900],
+       ['DEU',79.84,1.36,'Europe',81902307],
+       ['DNK',78.6,1.84,'Europe',5523095],
+       ['EGY',72.73,2.78,'Middle East',79716203],
+       ['GBR',80.05,2.0,'Europe',61801570],
+       ['IRN',72.49,1.7,'Middle East',73137148],
+       ['IRQ',68.09,4.77,'Middle East',31090763],
+       ['ISR',81.55,2.96,'Middle East',7485600],
+       ['RUS',68.6,1.54,'Europe',141850000],
+       ['USA',78.09,2.05,'North America',307007000]
+     ]);
      // Set chart options
      var options = {title: 'Fertility rate vs life expectancy in selected countries (2010).' +
                     ' X=Life Expectancy, Y=Fertility, Bubble size=Population, Bubble color=Region',
-                    'width' :500,
-                    'height':400,
+                     width :500,
+                     height:400,
                      hAxis: {title: 'Life Expectancy'},
                      vAxis: {title: 'Fertility Rate'},
                      bubble: {textStyle: {fontSize: 11}}
@@ -164,16 +161,16 @@
     function drawChart_6(){
      // Create the data table for drawChart_6.
      var data = new google.visualization.arrayToDataTable([
-       ["'Year'","'Sales'","'Expenses'"],
-       ["2013",1000.0,400.0],
-       ["2014",1170.0,460.0],
-       ["2015",660.0,1120.0],
-       ["2016",1030.0,540.0]
-]);
+       ['Year','Sales','Expenses'],
+       ['2013',1000,400],
+       ['2014',1170,460],
+       ['2015',660,1120],
+       ['2016',1030,540]
+     ]);
      // Set chart options
      var options = {title: 'Company Performance',
-                    'width' :500,
-                    'height':400,
+                     width :500,
+                     height:400,
                      hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
                      vAxis: {minValue: 0}
 };

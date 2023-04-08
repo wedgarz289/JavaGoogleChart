@@ -13,9 +13,21 @@ public class GoogleCharts
   private String functionsChartText; // funciones para crear las graficas
   private String optionChart; // texto de opciones para la grafica
   private String tableHtmlText; // texto para crear la tabla en html
+  private String tableJavaScript; // creea la tabla en lenguaje javascript
   private String subplot_matrix[][]; // matriz para gener la tabla html para comolar las graficas
+  private String type_chart; // tipo de grafica
+  private String func_name; // nombre de la funcion en javascript
+  private String id_element; // identificador para html
   private int    count_charts;  //contador de graficas
-  private int    rows,cols;
+  private int    rows,cols;    // dimension de la matriz para los subplots
+
+  // Constantes
+  public static final String PIE_CHART     = "PieChart";
+  public static final String COLUMN_CHART  = "ColumnChart";
+  public static final String LINE_CHART    = "LineChart";
+  public static final String SCATTER_CHART = "ScatterChart";
+  public static final String BUBBLE_CHART  = "BubbleChart";
+  public static final String AREA_CHART    = "AreaChart";
 
   public GoogleCharts()
   {
@@ -25,6 +37,9 @@ public class GoogleCharts
     this.functionsChartText = "";
     this.optionChart        = "";
     this.tableHtmlText      = "";
+    this.tableJavaScript    = "";
+    this.func_name          = "";
+    this.id_element         = "";
     this.count_charts       = 1;
     this.rows               = 0;
     this.cols               = 0;
@@ -77,6 +92,37 @@ public class GoogleCharts
     }
     this.tableHtmlText = this.tableHtmlText + "    </table>\n";
   }
+
+
+  private void generateCodeChartJavaScript()
+  {
+    this.drawChartText      = this.drawChartText +
+                              "    // Draw the pie chart for " + this.func_name + " when Charts is loaded.\n" +
+                              "    google.charts.setOnLoadCallback(" + this.func_name + ");\n";
+
+    this.functionsChartText = this.functionsChartText +
+                              "    // Callback that draws the pie chart for " + this.func_name +  ".\n" +
+                              "    function " + this.func_name + "(){\n"  +
+                              "     // Create the data table for " + this.func_name +  ".\n" +
+                              "     var data = new google.visualization.arrayToDataTable([\n";
+
+    this.functionsChartText = this.functionsChartText +
+                              this.tableJavaScript    +
+                              "     ]);\n";
+
+    if (!this.optionChart.equals("")) {this.functionsChartText = this.functionsChartText + this.optionChart;}
+    else{this.functionsChartText = this.functionsChartText +
+                                   "     // Set chart options\n" +
+                                   "     var options = {};\n";
+        }
+
+    this.functionsChartText = this.functionsChartText +
+      "     // Instantiate and draw the chart for " + this.func_name +  ".\n" +
+      "     var chart = new google.visualization." + this.type_chart + "(document.getElementById('" + this.id_element + "'));\n" +
+      "     chart.draw(data,options);\n" +
+      "    }\n";
+  }
+
   public void sizeMatrixSubplots(int rows, int cols)
   {
     this.rows = rows;
@@ -94,107 +140,90 @@ public class GoogleCharts
     this.subplot_matrix[n_rows-1][n_cols-1] = "drawChart_div_" + String.valueOf(this.count_charts);
   }
 
-  public void setOptionChart(String optionChart){
-    this.optionChart = optionChart;
+  public void setDataOfChart(Map<String,Integer> xy,String[] column_labels)
+  {
+    int count = 0;
+    this.tableJavaScript = this.tableJavaScript +
+                          "       [" + String.join(",",column_labels) + "],\n";
+    for (Map.Entry map : xy.entrySet() )
+    {
+      if (count == (xy.size() - 1)) {
+        this.tableJavaScript = this.tableJavaScript + "       [" + map.getKey() + "," + String.valueOf(map.getValue()) + "]\n";
+      }
+      else{
+        this.tableJavaScript = this.tableJavaScript + "       [" + map.getKey() + "," + String.valueOf(map.getValue()) + "],\n";
+      }
+      count++;
+    }
   }
 
-  public void PieChart(Map<String,Integer> xy)
+  public void setDataOfChart(double[][] table, String[] column_labels)
   {
-    GooglePieChart pieChart = new GooglePieChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    pieChart.setOptionPieChart(this.optionChart);
-    pieChart.generateCodePieChart(xy);
-    this.drawChartText      = this.drawChartText      + pieChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + pieChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
+    this.tableJavaScript = this.tableJavaScript +
+                          "       [" + String.join(",",column_labels) + "],\n";
+    for (int row = 0; row<table.length; row++) {
+      this.tableJavaScript = this.tableJavaScript + "       [";
+      for (int col = 0; col<table[row].length; col++) {
+        if (col == (table[row].length - 1)){
+          this.tableJavaScript = this.tableJavaScript + String.valueOf(table[row][col]);
+        }
+        else{
+          this.tableJavaScript = this.tableJavaScript + String.valueOf(table[row][col]) + ",";
+        }
+      }
+      if (row == (table.length - 1)) {
+        this.tableJavaScript = this.tableJavaScript + "]\n";
+      }
+      else{
+        this.tableJavaScript = this.tableJavaScript + "],\n";
+      }
+    }
   }
 
-  public void BarChart(Map<String,Double> xy, String label_column_x, String label_column_y)
+  public void setDataOfChart(ArrayList<DataArray> data, String[] column_labels)
   {
-    GoogleBarChart barChart = new GoogleBarChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    barChart.setOptionBarChart(this.optionChart);
-    barChart.generateCodeBarChart(xy,label_column_x,label_column_y);
-    this.drawChartText      = this.drawChartText      + barChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + barChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
+    this.tableJavaScript = this.tableJavaScript +
+                          "       [" + String.join(",",column_labels) + "],\n";
+    int size_row = data.get(0).getData().length;
+    int size_col = data.size();
+    for (int row = 0; row<size_row; row++) {
+      this.tableJavaScript = this.tableJavaScript + "       [";
+      for (int col = 0; col<size_col; col++) {
+        if (!(data.get(col).getData()[row].getClass().equals(String.class)))
+        {
+          this.tableJavaScript = this.tableJavaScript + String.valueOf(data.get(col).getData()[row]);
+        }
+        else
+        {
+          this.tableJavaScript = this.tableJavaScript + data.get(col).getData()[row];
+        }
+        if (col < (size_col-1)) {
+          this.tableJavaScript = this.tableJavaScript + ",";
+        }
+      }
+      if (row < (size_row-1)) {
+        this.tableJavaScript = this.tableJavaScript + "],\n";
+      }
+      else{
+        this.tableJavaScript = this.tableJavaScript + "]\n";
+      }
+    }
+
   }
 
-  public void BarChart(double[][] table,String[] table_label)
+  public void plot(String type_chart,String option)
   {
-    GoogleBarChart barChart = new GoogleBarChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    barChart.setOptionBarChart(this.optionChart);
-    barChart.generateCodeBarChart(table,table_label);
-    this.drawChartText      = this.drawChartText      + barChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + barChart.getFunctionChartText();
+    this.type_chart = type_chart;
+    this.func_name  = "drawChart_" + String.valueOf(this.count_charts);
+    this.id_element = "drawChart_div_" + String.valueOf(this.count_charts);
+    this.optionChart = "     // Set chart options\n" +
+                       "     var options = {" + option + "};\n";
+    this.generateCodeChartJavaScript();
     this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void LineChart(double[][] table,String[] table_label)
-  {
-    GoogleLineChart lineChart = new GoogleLineChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    lineChart.setOptionLineChart(this.optionChart);
-    lineChart.generateCodeLineChart(table,table_label);
-    this.drawChartText      = this.drawChartText      + lineChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + lineChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void LineChart(String[] column_1,double[][] table,String[] table_label)
-  {
-    GoogleLineChart lineChart = new GoogleLineChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    lineChart.setOptionLineChart(this.optionChart);
-    lineChart.generateCodeLineChart(column_1,table,table_label);
-    this.drawChartText      = this.drawChartText      + lineChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + lineChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void ScatterChart(double[][] table,String[] table_label)
-  {
-    GoogleScatterChart scatterChart = new GoogleScatterChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    scatterChart.setOptionScatterChart(this.optionChart);
-    scatterChart.generateCodeScatterChart(table,table_label);
-    this.drawChartText      = this.drawChartText      + scatterChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + scatterChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void BubbleChart(String table)
-  {
-    GoogleBubbleChart bubbleChart = new GoogleBubbleChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    bubbleChart.setOptionBubbleChart(this.optionChart);
-    bubbleChart.generateCodeBubbleChart(table);
-    this.drawChartText      = this.drawChartText      + bubbleChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + bubbleChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void AreaChart(double[][] table,String[] table_label)
-  {
-    GoogleAreaChart areaChart = new GoogleAreaChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    areaChart.setOptionAreaChart(this.optionChart);
-    areaChart.generateCodeAreaChart(table,table_label);
-    this.drawChartText      = this.drawChartText      + areaChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + areaChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
-  }
-
-  public void AreaChart(String[] column_1,double[][] table,String[] table_label)
-  {
-    GoogleAreaChart areaChart = new GoogleAreaChart("drawChart_" + String.valueOf(this.count_charts),"drawChart_div_" + String.valueOf(this.count_charts));
-    areaChart.setOptionAreaChart(this.optionChart);
-    areaChart.generateCodeAreaChart(column_1,table,table_label);
-    this.drawChartText      = this.drawChartText      + areaChart.getDrawChartText();
-    this.functionsChartText = this.functionsChartText + areaChart.getFunctionChartText();
-    this.count_charts++;
-    this.optionChart = "";
+    this.func_name       = "";
+    this.id_element      = "";
+    this.optionChart     = "";
+    this.tableJavaScript = "";
   }
 
   public void create()
@@ -229,5 +258,8 @@ public class GoogleCharts
 
     // System.out.println(this.html_text);
     this.writeHTML();
+    this.drawChartText      = "";
+    this.functionsChartText = "";
+    this.html_text          = "";
   }
 }

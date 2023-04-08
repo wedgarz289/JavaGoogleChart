@@ -6,6 +6,11 @@ public class DataArray<T>{
   // private int   [] dataInteger;
   private T[] data;
 
+  public DataArray(){}
+  public DataArray(T[] data)
+  {
+    this.data = data;
+  }
   public void setData(T[] data)
   {
     this.data = data;
