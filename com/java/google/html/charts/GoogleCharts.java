@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class GoogleCharts
 {
   private String html_text; // texto html y texto javascript
+  private String file_name_html; // nombre del archivo html
   private String chartScriptText; // instrucciones javascript para crear las graficas
   private String drawChartText; // instrucciones javascript para dibbujar las graficas
   private String functionsChartText; // funciones para crear las graficas
@@ -32,6 +33,7 @@ public class GoogleCharts
   public GoogleCharts()
   {
     this.html_text          = "";
+    this.file_name_html     = "";
     this.chartScriptText    = "";
     this.drawChartText      = "";
     this.functionsChartText = "";
@@ -48,7 +50,7 @@ public class GoogleCharts
   private void writeHTML()
   {
     try {
-      FileWriter file_html = new FileWriter("index.html");
+      FileWriter file_html = new FileWriter(this.file_name_html);
       file_html.write(this.html_text);
       file_html.close();
     } catch(IOException e) {
@@ -123,7 +125,7 @@ public class GoogleCharts
       System.out.println("");
     }
   }
-  
+
   public void sizeMatrixSubplots(int rows, int cols)
   {
     this.rows = rows;
@@ -227,8 +229,9 @@ public class GoogleCharts
     this.tableJavaScript = "";
   }
 
-  public void create()
+  public void create(String file_name_html)
   {
+    this.file_name_html = file_name_html;
     this.html_text = "" +
     "<html>\n" +
     " <head>\n" +
@@ -262,5 +265,6 @@ public class GoogleCharts
     this.drawChartText      = "";
     this.functionsChartText = "";
     this.html_text          = "";
+    this.file_name_html = "";
   }
 }

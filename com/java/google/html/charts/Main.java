@@ -131,7 +131,7 @@ public class Main{
     charts.plot(GoogleCharts.AREA_CHART,optionChart);
 
 
-    charts.create();
+    charts.create("index.html");
 
 
 
