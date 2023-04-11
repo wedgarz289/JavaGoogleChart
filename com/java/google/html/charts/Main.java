@@ -130,7 +130,9 @@ public class Main{
     charts.setDataOfChart(data_areaChart,new String[]{"'Year'", "'Sales'", "'Expenses'"});
     charts.plot(GoogleCharts.AREA_CHART,optionChart);
 
-
+    charts.createJsFile("myChart.js");
+    charts.createHtmlFile("index_js.html");
+    
     charts.create("index.html");
 
 

@@ -9,6 +9,8 @@ public class GoogleCharts
 {
   private String html_text; // texto html y texto javascript
   private String file_name_html; // nombre del archivo html
+  private String js_text; // texto javascript
+  private String file_name_js; // nombre del archivo js
   private String chartScriptText; // instrucciones javascript para crear las graficas
   private String drawChartText; // instrucciones javascript para dibbujar las graficas
   private String functionsChartText; // funciones para crear las graficas
@@ -34,6 +36,8 @@ public class GoogleCharts
   {
     this.html_text          = "";
     this.file_name_html     = "";
+    this.js_text            = "";
+    this.file_name_js       = "";
     this.chartScriptText    = "";
     this.drawChartText      = "";
     this.functionsChartText = "";
@@ -53,6 +57,18 @@ public class GoogleCharts
       FileWriter file_html = new FileWriter(this.file_name_html);
       file_html.write(this.html_text);
       file_html.close();
+    } catch(IOException e) {
+      System.out.println("Error:");
+      e.printStackTrace();
+    }
+  }
+
+  private void writeJs()
+  {
+    try {
+      FileWriter file_js = new FileWriter(this.file_name_js);
+      file_js.write(this.js_text);
+      file_js.close();
     } catch(IOException e) {
       System.out.println("Error:");
       e.printStackTrace();
@@ -229,6 +245,48 @@ public class GoogleCharts
     this.tableJavaScript = "";
   }
 
+  public void createJsFile(String file_name_js)
+  {
+    this.file_name_js = file_name_js;
+    this.js_text = "    // -------- add this in your html file --------\n" +
+                     "    // <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" +
+                     "    // <script type=\"text/javascript\" src=\"" + this.file_name_js + "\"></script>\n" +
+                     "    // --------------------------------------------\n" +
+                     "    // Load the Visualization API and the corechart package.\n" +
+                     "    google.charts.load('current', {'packages':['corechart']});\n" +
+                     this.drawChartText +
+                     this.functionsChartText;
+    this.writeJs();
+  }
+  public void createHtmlFile(String file_name_html)
+  {
+    this.file_name_html = file_name_html;
+    this.html_text = "" +
+    "<html>\n" +
+    " <head>\n" +
+    "  <!--Load the AJAX API-->\n" +
+    "   <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" +
+    "   <script type=\"text/javascript\" src=\"" + this.file_name_js + "\"></script>\n" +
+    "  </head>\n" +
+    "  <body>\n";
+    if(this.count_charts == 2)
+    {
+      this.html_text = this.html_text +
+      "    <!--Div that will hold the pie chart-->\n" +
+      "    <div id=\"drawChart_div_1\"></div>\n";
+    }
+    else
+    {
+      this.createTableHTML();
+      this.html_text = this.html_text + this.tableHtmlText;
+    }
+    this.html_text = this.html_text +
+    "  </body>\n"+
+    "</html>\n";
+
+    // System.out.println(this.html_text);
+    this.writeHTML();
+  }
   public void create(String file_name_html)
   {
     this.file_name_html = file_name_html;
@@ -265,6 +323,8 @@ public class GoogleCharts
     this.drawChartText      = "";
     this.functionsChartText = "";
     this.html_text          = "";
-    this.file_name_html = "";
+    this.file_name_html     = "";
+    this.file_name_js       = "";
+    this.js_text            = "";
   }
 }
